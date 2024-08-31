@@ -1,4 +1,4 @@
-import Form from "./Form";
+//  import Form from "./Form";
 
 
 function AddShow(){
@@ -7,7 +7,7 @@ function AddShow(){
         <div>
     
             <h1>Add a new show</h1>
-            <Form />
+          
             
         </div>
     )
@@ -15,3 +15,4 @@ function AddShow(){
 
 export default AddShow;
 
+//  <Form />
