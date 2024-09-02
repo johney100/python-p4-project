@@ -24,7 +24,7 @@ show_actors = db.Table(
 class Show(db.Model, SerializerMixin):
     __tablename__ = 'shows'
 
-   # serialize_rules = ('-reviews.show',)
+    serialize_rules = ('-reviews.show',)
     
     name = db.Column(db.String, unique=False)
     network = db.Column(db.String, unique=False)
@@ -44,7 +44,7 @@ class Show(db.Model, SerializerMixin):
 class Actor(db.Model, SerializerMixin):
     __tablename__ = 'actors'
 
-    #serialize_rules = ('shows.name',)
+    serialize_rules = ('shows.name',)
 
     name = db.Column(db.String, unique=False)
     age = db.Column(db.Integer, unique=False)
