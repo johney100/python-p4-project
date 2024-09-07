@@ -24,7 +24,7 @@ show_actors = db.Table(
 class Show(db.Model, SerializerMixin):
     __tablename__ = 'shows'
 
-   # serialize_rules = ('-reviews',)
+    serialize_rules = ('-reviews',)
     
     name = db.Column(db.String, unique=False)
     network = db.Column(db.String, unique=False)
@@ -32,6 +32,11 @@ class Show(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     id = db.Column(db.Integer, primary_key=True)
+
+    # Relationship mapping the show to related reviews
+    reviews = db.relationship(
+        'Review', back_populates="show", cascade='all, delete-orphan')
+
 
      # Relationship mapping the show to related actors
    # actors = db.relationship(
@@ -64,7 +69,7 @@ class Actor(db.Model, SerializerMixin):
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
 
-    #serialize_rules = ( '-shows','-users',)
+    serialize_rules = ( '-shows',)
     
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer)
@@ -72,7 +77,13 @@ class Review(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-   # show_id = db.Column(db.Integer, db.ForeignKey('shows.id'))
+
+    
+    show_id = db.Column(db.Integer, db.ForeignKey('shows.id'))
+    
+    # Relationship mapping the review to related employee
+    show = db.relationship('Show', back_populates="reviews")
+
    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
