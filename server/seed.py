@@ -26,6 +26,8 @@ def make_reviews():
         Review(
             comment=fake.sentence(),
             score=randint(1, 4),
+            show_id=randint(1, 10),
+            user_id=randint(1, 10),
         )
         for _ in range(20)
     ]

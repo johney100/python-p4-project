@@ -80,6 +80,70 @@ def shows_by_id(id):
 
         return response
 
+@app.route('/reviews', methods=["GET", "POST"])
+def reviews():
+    if request.method == "GET":
+        reviews = [review.to_dict() for review in Review.query.all()]
+        return  make_response(jsonify(reviews),   200  )
+    
+    elif request.method == "POST":
+        data = request.get_json()
+        new_review = Review(
+            score=data.get('score'),
+            comment=data.get('comment')
+            #show_id=data.get('show_id')
+        )
+
+        db.session.add(new_review)
+        db.session.commit()
+
+        new_review_dict = new_review.to_dict()
+
+        return  make_response(jsonify(new_review_dict), 201)
+
+@app.route('/users', methods=["GET", "POST"])
+def users():
+    if request.method == "GET":
+        users = [user.to_dict() for user in User.query.all()]
+        return  make_response(jsonify(users),   200  )
+    
+    elif request.method == "POST":
+        data = request.get_json()
+        new_user = User(
+            username=data.get('username'),
+            location=data.get('location')
+           
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        new_user_dict = new_user.to_dict()
+
+        return  make_response(jsonify(new_user_dict), 201)
+    
+    
+@app.route('/actors', methods=["GET", "POST"])
+def actors():
+    if request.method == "GET":
+        actors = [actor.to_dict() for actor in Actor.query.all()]
+        return  make_response(jsonify(actors),   200  )
+    
+    elif request.method == "POST":
+        data = request.get_json()
+        new_actor = Actor(
+            name=data.get('name'),
+            age=data.get('age')
+           
+        )
+
+        db.session.add(new_actor)
+        db.session.commit()
+
+        new_actor_dict = new_actor.to_dict()
+
+        return  make_response(jsonify(new_actor_dict), 201)
+    
 
 
 if __name__ == '__main__':

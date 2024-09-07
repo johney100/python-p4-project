@@ -24,7 +24,7 @@ show_actors = db.Table(
 class Show(db.Model, SerializerMixin):
     __tablename__ = 'shows'
 
-    serialize_rules = ('-reviews.show',)
+   # serialize_rules = ('-reviews',)
     
     name = db.Column(db.String, unique=False)
     network = db.Column(db.String, unique=False)
@@ -33,9 +33,9 @@ class Show(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
 
-     # Relationship mapping the employee to related meetings
-    actors = db.relationship(
-        'Actor', secondary=show_actors, back_populates='shows')
+     # Relationship mapping the show to related actors
+   # actors = db.relationship(
+    #    'Actor', secondary=show_actors, back_populates='shows')
    
     def __repr__(self):
         return f'<Show {self.name}>'
@@ -44,7 +44,7 @@ class Show(db.Model, SerializerMixin):
 class Actor(db.Model, SerializerMixin):
     __tablename__ = 'actors'
 
-    serialize_rules = ('shows.name',)
+   # serialize_rules = ('shows.name',)
 
     name = db.Column(db.String, unique=False)
     age = db.Column(db.Integer, unique=False)
@@ -53,9 +53,9 @@ class Actor(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
 
-     # Relationship mapping the meeting to related employees
-    shows = db.relationship(
-        'Show', secondary=show_actors, back_populates='actors')
+     # Relationship mapping the actor to related shows
+    #shows = db.relationship(
+    #    'Show', secondary=show_actors, back_populates='actors')
    
     def __repr__(self):
         return f'<Actor {self.name}>'
@@ -64,7 +64,7 @@ class Actor(db.Model, SerializerMixin):
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
 
-    #serialize_rules = ( '-show.reviews','-user.reviews',)
+    #serialize_rules = ( '-shows','-users',)
     
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer)
@@ -72,11 +72,11 @@ class Review(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    show_id = db.Column(db.Integer, db.ForeignKey('shows.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+   # show_id = db.Column(db.Integer, db.ForeignKey('shows.id'))
+   # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
-        return f'<Review ({self.id}) of {self.game}: {self.score}/10>'
+        return f'<Review ({self.id}) of {self.comment}: {self.score}/10>'
     
     
 class User(db.Model, SerializerMixin):
@@ -90,4 +90,4 @@ class User(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    reviews = db.relationship('Review', backref='user')
+    #reviews = db.relationship('Review', backref='user')
