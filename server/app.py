@@ -88,10 +88,11 @@ def reviews():
     
     elif request.method == "POST":
         data = request.get_json()
+        show_id = data.get('show_id')
         new_review = Review(
             score=data.get('score'),
-            comment=data.get('comment')
-            #show_id=data.get('show_id')
+            comment=data.get('comment'),
+            show_id=show_id
         )
 
         db.session.add(new_review)
