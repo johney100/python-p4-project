@@ -24,7 +24,7 @@ show_actors = db.Table(
 class Show(db.Model, SerializerMixin):
     __tablename__ = 'shows'
 
-    serialize_rules = ('-reviews',)
+    serialize_rules = ('-reviews','-actors')
     
     name = db.Column(db.String, unique=False)
     network = db.Column(db.String, unique=False)
@@ -38,9 +38,9 @@ class Show(db.Model, SerializerMixin):
         'Review', back_populates="show", cascade='all, delete-orphan')
 
 
-     # Relationship mapping the show to related actors
-   # actors = db.relationship(
-    #    'Actor', secondary=show_actors, back_populates='shows')
+    # Relationship mapping the employee to related meetings
+    actors = db.relationship(
+        'Actor', secondary=show_actors, back_populates='shows')
    
     def __repr__(self):
         return f'<Show {self.name}>'
@@ -49,7 +49,7 @@ class Show(db.Model, SerializerMixin):
 class Actor(db.Model, SerializerMixin):
     __tablename__ = 'actors'
 
-   # serialize_rules = ('shows.name',)
+    serialize_rules = ('-shows',)
 
     name = db.Column(db.String, unique=False)
     age = db.Column(db.Integer, unique=False)
@@ -58,9 +58,9 @@ class Actor(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
 
-     # Relationship mapping the actor to related shows
-    #shows = db.relationship(
-    #    'Show', secondary=show_actors, back_populates='actors')
+    # Relationship mapping the meeting to related employees
+    shows = db.relationship(
+        'Show', secondary=show_actors, back_populates='actors')
    
     def __repr__(self):
         return f'<Actor {self.name}>'

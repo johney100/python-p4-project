@@ -4,6 +4,7 @@ from flask import Flask, request, make_response, jsonify
 from flask_cors import CORS
 from flask_migrate import Migrate
 
+
 from models import db, Show, Actor, User, Review, show_actors
 
 app = Flask(__name__)
@@ -132,9 +133,11 @@ def actors():
     
     elif request.method == "POST":
         data = request.get_json()
+        
         new_actor = Actor(
             name=data.get('name'),
             age=data.get('age')
+         
            
         )
 
