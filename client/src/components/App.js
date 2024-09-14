@@ -1,32 +1,61 @@
 import React, { useEffect, useState } from "react";
-import '../App.css';
+import '../index.css';
 import ShowContainer from './ShowContainer';
 import ActorContainer from './ActorContainer';
 import NavBar from './NavBar';
-import AddShow from './AddShow';
 import {BrowserRouter, Switch, Routes, Route, Link} from "react-router-dom";
 
 
 
 function App() {
+
+  const [shows, setShows] = useState([]);
+  const [actors, setActors] = useState([]);
+
+  useEffect(() => {
+    const fetchShowData = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/shows');
+        const data = await response.json();
+        setShows(data);
+      } catch (error) {
+        console.error('Error fetching shows:', error);
+      }
+    };
+
+    fetchShowData();
+  }, []);
+
+  useEffect(() => {
+    const fetchActorData = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/actors');
+        const data = await response.json();
+        setActors(data);
+      } catch (error) {
+        console.error('Error fetching actors:', error);
+      }
+    };
+
+    fetchActorData();
+  }, []);
+
   return (
     <div className="App"> 
     <h1>TV Show App</h1>
-      <BrowserRouter> 
-     
+    <BrowserRouter>
+      <NavBar />  {/* Pass search function to NavBar */}
       <Routes>
-        
-        
-       
-        </Routes>
-      </BrowserRouter>
+        <Route path="/" element={<ShowContainer shows={shows} />} />
+        <Route path="/actors" element={<ActorContainer actors={actors} />} />
+        {/* Add more routes here */}
+      </Routes>
+    </BrowserRouter>
     </div>
   );
 }
 
-
 export default App;
-
 
 // <Route path="/addshow" element={<Form addShows={addShows} />}/>
 // <Route path="/" element={<Home />}/>

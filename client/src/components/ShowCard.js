@@ -1,19 +1,15 @@
 
 // Displaying individual show information
+import React, { useState } from "react";
 
-function ShowCard({image, name}){
-  
-    // Uses props passed from ShowContainer const mappedShows as attributes to display in the list below
-    return(
-    <div>
-   
-   
-            <li>
-                <img src={image} alt={name} />
-                <h3> Show: {name}</h3>
-            </li>
-    </div>
+function ShowCard({ show }) {
+    return (
+      <div className="show-card">
+        <h3>{show.name}</h3>
+        <p>Network: {show.network}</p>
+        {/* Add other show details as needed */}
+      </div>
     );
-}
-
-export default ShowCard;
+  }
+  
+  export default ShowCard;

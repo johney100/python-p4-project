@@ -9,9 +9,9 @@ function NavBar(){
     return(
         <div>
             <nav>
-            <Link to="/">Home</Link> 
+            <Link to="/">Shows</Link> 
             <Link to="/addshow">Add Show</Link>
-            <Link to="/shows">Show Card</Link>
+            <Link to="/actors">Actors</Link>
             </nav>
         </div>
     );
