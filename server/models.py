@@ -43,7 +43,7 @@ class Show(db.Model, SerializerMixin):
         'Actor', secondary=show_actors, back_populates='shows')
    
     def __repr__(self):
-        return f'<Show {self.name}>'
+        return f'<Show {self.name} Network: {self.network}>'
     
 
 class Actor(db.Model, SerializerMixin):
@@ -69,7 +69,7 @@ class Actor(db.Model, SerializerMixin):
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
 
-    serialize_rules = ( '-shows',)
+    #serialize_rules = ( '-shows',)
     
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer)
@@ -81,10 +81,12 @@ class Review(db.Model, SerializerMixin):
     
     show_id = db.Column(db.Integer, db.ForeignKey('shows.id'))
     
-    # Relationship mapping the review to related employee
+    # Relationship mapping the review to related show
     show = db.relationship('Show', back_populates="reviews")
 
-   # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+   # user = db.relationship('User', back_populates="reviews")
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
         return f'<Review ({self.id}) of {self.comment}: {self.score}/10>'
@@ -102,3 +104,4 @@ class User(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     #reviews = db.relationship('Review', backref='user')
+    #review = db.relationship('Reciew', back_populates="users")
