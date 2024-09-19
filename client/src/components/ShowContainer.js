@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ShowCard from "./ShowCard";
 import ReviewCard from "./ReviewCard";
 import AddShow from "./AddShow";
+import AddReview from "./AddReview";
 
 function ShowContainer({ shows }) {
   const [reviews, setReviews] = useState([]);
@@ -25,6 +26,11 @@ function ShowContainer({ shows }) {
     console.log("New show added:", newShow);
   };
 
+  const handleAddReview = (showId, newReview) => {
+    // Handle newly created review (e.g., update reviews state)
+    console.log("New review added for show", showId, newReview);
+  };
+
   return (
     <div>
       <h2>This is the Show Card</h2>
@@ -34,10 +40,12 @@ function ShowContainer({ shows }) {
         {shows.map((show) => (
           <li key={show.id}>
             <ShowCard show={show} />
-            <ReviewCard review={reviews.find((review) => review.show_id === show.id)} />
+            <ReviewCard review={reviews.find((review) => review.show_id === show.id)} showId = {show.id} onAddReview={handleAddReview} />
+            <AddReview onAddReview={handleAddReview} showId = {show.id}/>
           </li>
         ))}
       </ul>
+      
     </div>
   );
 }

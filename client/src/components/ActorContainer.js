@@ -1,4 +1,4 @@
-import {useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import ActorCard from "./ActorCard"; // Import ActorCard component for individual Actor rendering
 
 function ActorContainer({actors}) {
