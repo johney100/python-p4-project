@@ -7,10 +7,13 @@ import {BrowserRouter, Switch, Routes, Route, Link} from "react-router-dom";
 
 
 
+
+
 function App() {
 
   const [shows, setShows] = useState([]);
   const [actors, setActors] = useState([]);
+ 
 
   useEffect(() => {
     const fetchShowData = async () => {
@@ -40,6 +43,8 @@ function App() {
     fetchActorData();
   }, []);
 
+ 
+
   return (
     <div className="App"> 
     <h1>TV Show App</h1>
@@ -48,6 +53,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ShowContainer shows={shows} />} />
         <Route path="/actors" element={<ActorContainer actors={actors} />} />
+     
         {/* Add more routes here */}
       </Routes>
     </BrowserRouter>
