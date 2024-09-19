@@ -9,7 +9,6 @@ function ReviewCard({ review }) {
         <>
           <h4>Review: "{review.comment}"</h4>
           <p>Score: {review.score}/4</p>
-          {/* Add other show details as needed */}
         </>
       ) : (
         <p>No review available for this show.</p>

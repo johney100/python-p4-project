@@ -26,6 +26,7 @@ function AddReview({ onAddReview, showId }) {
 
   return (
     <form className="new-review" onSubmit={handleSubmit}>
+      <h3>Leave a review</h3>
       <input
         type="text"
         name="comment"
