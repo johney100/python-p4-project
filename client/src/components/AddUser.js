@@ -15,7 +15,7 @@ function AddUser({ onAddUser }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newReview),
+      body: JSON.stringify(newUser),
     })
       .then((r) => r.json())
       .then((newUser) => {
@@ -23,7 +23,6 @@ function AddUser({ onAddUser }) {
         setNewUser({ location: "", username: "" });
       });
   };
-
 
 
   return (
