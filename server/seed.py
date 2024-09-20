@@ -42,7 +42,8 @@ def make_actors():
     actors = [
         Actor(
             name=f"{fake.first_name()} {fake.last_name()}",
-            age=randint(18, 85),  # Removed the extra comma
+            age=randint(18, 85),
+            show_id=randint(1, 10),
         )
         for _ in range(25)
     ]

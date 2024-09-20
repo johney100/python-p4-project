@@ -61,6 +61,8 @@ class Actor(db.Model, SerializerMixin):
     # Relationship mapping the meeting to related employees
     shows = db.relationship(
         'Show', secondary=show_actors, back_populates='actors')
+    
+    show_id = db.Column(db.Integer, db.ForeignKey('shows.id'))
    
     def __repr__(self):
         return f'<Actor {self.name}>'

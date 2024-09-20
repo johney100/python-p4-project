@@ -68,7 +68,7 @@ function App() {
       <NavBar />  {/* Pass search function to NavBar */}
       <Routes>
         <Route path="/" element={<ShowContainer shows={shows} />} />
-        <Route path="/actors" element={<ActorContainer actors={actors} />} />
+        <Route path="/actors" element={<ActorContainer actors={actors}  />} />
         <Route path="/users" element={<UserContainer users={users} />} />
         {/* Add more routes here */}
       </Routes>
