@@ -3,6 +3,7 @@ import ShowCard from "./ShowCard";
 import ReviewCard from "./ReviewCard";
 import AddShow from "./AddShow";
 import AddReview from "./AddReview";
+import AddActor from "./AddActor";
 
 function ShowContainer({ shows }) {
   const [reviews, setReviews] = useState([]);
@@ -47,6 +48,7 @@ function ShowContainer({ shows }) {
             <ShowCard show={show} />
             <ReviewCard review={reviews.find((review) => review.show_id === show.id)} showId = {show.id} onAddReview={handleAddReview} />
             <AddReview onAddReview={handleAddReview} showId = {show.id}/>
+            <AddActor showId = {show.id} />
           </li>
         ))}
       </ul>
