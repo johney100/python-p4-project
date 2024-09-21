@@ -56,6 +56,7 @@ function AddActor({ onAddActor, showId }) {
         type="text"
         name="name"
         autoComplete="off"
+        placeholder="Enter Actor's Name"
         value={newActor.name}
         onChange={(e) => setNewActor({ ...newActor, name: e.target.value })}
       />
@@ -63,6 +64,7 @@ function AddActor({ onAddActor, showId }) {
         type="text"
         name="age"
         autoComplete="off"
+         placeholder="Enter Actor's Age"
         value={newActor.age}
         onChange={(e) => setNewActor({ ...newActor, age: e.target.value })}
       />

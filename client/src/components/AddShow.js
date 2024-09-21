@@ -29,6 +29,7 @@ function AddShow({ onAddShow }) {
         type="text"
         name="name"
         autoComplete="off"
+        placeholder="Enter name of new show"
         value={newShow.name}
         onChange={(e) => setNewShow({ ...newShow, name: e.target.value })}
       />
@@ -36,6 +37,7 @@ function AddShow({ onAddShow }) {
         type="text"
         name="network"
         autoComplete="off"
+        placeholder="Enter network for new show"
         value={newShow.network}
         onChange={(e) => setNewShow({ ...newShow, network: e.target.value })}
       />

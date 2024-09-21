@@ -31,6 +31,7 @@ function AddReview({ onAddReview, showId }) {
         type="text"
         name="comment"
         autoComplete="off"
+        placeholder="Add your review"
         value={newReview.comment}
         onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
       />
@@ -38,6 +39,7 @@ function AddReview({ onAddReview, showId }) {
         type="int"
         name="score"
         autoComplete="off"
+         placeholder="Add a score out of 4"
         value={newReview.score}
         onChange={(e) => setNewReview({ ...newReview, score: e.target.value })}
       />
