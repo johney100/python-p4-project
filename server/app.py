@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 
 
-from models import db, Show, Actor, User, Review, show_actors
+from models import db, Show, Actor, User, Review, shows_actors
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -133,15 +133,24 @@ def actors():
     
     elif request.method == "POST":
         data = request.get_json()
+        show_id = data.get('show_id')
         
         new_actor = Actor(
             name=data.get('name'),
-            age=data.get('age')
-         
+            age=data.get('age'),
+            show_id=show_id
            
         )
 
+
         db.session.add(new_actor)
+        db.session.commit()
+
+       
+        association = shows_actors.insert().values(show_id=show_id, actor_id=new_actor.id, role=data.get('role'))
+        
+
+        db.session.execute(association)
         db.session.commit()
 
         new_actor_dict = new_actor.to_dict()
@@ -149,7 +158,25 @@ def actors():
         return  make_response(jsonify(new_actor_dict), 201)
     
 
+    
+@app.route('/shows_actors/<int:show_id>/<int:actor_id>', methods=['GET', 'POST'])
+def update_show_actor_role(show_id, actor_id):
+  if request.method == 'GET':
+    show_actor = db.session.query(shows_actors).filter_by(show_id=show_id, actor_id=actor_id).first()
+    if show_actor:
+      return jsonify({'role': show_actor.role}), 200
+    else:
+      return jsonify({'message': 'Show-actor relationship not found'}), 404
+  else:
+    data = request.get_json()
+    role = data.get('role')
 
-if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    show_actor = db.session.query(shows_actors).filter_by(show_id=show_id, actor_id=actor_id).first()
+
+    if show_actor:
+      show_actor.role = role
+      db.session.commit()
+      return jsonify({'message': 'Role updated successfully'}), 200
+    else:
+      return jsonify({'message': 'Show-actor relationship not found'}), 404
 

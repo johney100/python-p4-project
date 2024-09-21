@@ -2,29 +2,52 @@ import React, { useState } from "react";
 
 function AddActor({ onAddActor, showId }) {
   const [newActor, setNewActor] = useState({
-    name: "",
-    age: "",
+    name: '',
+    age: '',
     show_id: showId,
-   
+    role: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    fetch("http://127.0.0.1:5000/actors", {
-      method: "POST",
+    // Send a POST request to create a new actor
+    const actorResponse = await fetch('http://127.0.0.1:5000/actors', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(newActor),
-    })
-      .then((r) => r.json())
-      .then((newActor) => {
-        onAddActor(newActor);
-        setNewActor({ name: "", age: "" });
-      });
-  };
+    });
 
+    if (!actorResponse.ok) {
+      console.error('Error creating actor:', actorResponse.statusText);
+      return;
+    }
+
+    const newActorData = await actorResponse.json();
+
+    // Send a POST request to create a new show-actor association
+    const associationResponse = await fetch('http://127.0.0.1:5000/shows_actors', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        show_id: showId,
+        actor_id: newActorData.id,
+        role: newActorData.role,
+      }),
+    });
+
+    if (!associationResponse.ok) {
+      console.error('Error creating show-actor association:', associationResponse.statusText);
+      return;
+    }
+
+    onAddActor(newActorData);
+    setNewActor({ name: '', age: '', show_id: showId, role: '' });
+  };
 
   return (
     <form className="new-review" onSubmit={handleSubmit}>
@@ -42,6 +65,14 @@ function AddActor({ onAddActor, showId }) {
         autoComplete="off"
         value={newActor.age}
         onChange={(e) => setNewActor({ ...newActor, age: e.target.value })}
+      />
+      <input
+        type="text"
+        name="role"
+        autoComplete="off"
+        placeholder="Enter Actor's Role"
+        value={newActor.role}
+        onChange={(e) => setNewActor({ ...newActor, role: e.target.value })}
       />
       <button type="submit">Send</button>
     </form>

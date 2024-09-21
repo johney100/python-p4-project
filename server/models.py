@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy_serializer import SerializerMixin
-
+from sqlalchemy.ext.associationproxy import association_proxy
 
 
 metadata = MetaData(naming_convention={
@@ -10,13 +10,12 @@ metadata = MetaData(naming_convention={
 
 db = SQLAlchemy(metadata=metadata)
 
-show_actors = db.Table(
+shows_actors = db.Table(
     'shows_actors',
     metadata,
-    db.Column('show_id', db.Integer, db.ForeignKey(
-        'shows.id'), primary_key=True),
-    db.Column('actor_id', db.Integer, db.ForeignKey(
-        'actors.id'), primary_key=True)
+    db.Column('show_id', db.Integer, db.ForeignKey('shows.id'), primary_key=True),
+    db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'), primary_key=True),
+    db.Column('role', db.String, unique=False)  # Add a new column for the role attribute
 )
 
 
@@ -40,7 +39,7 @@ class Show(db.Model, SerializerMixin):
 
     # Relationship mapping the employee to related meetings
     actors = db.relationship(
-        'Actor', secondary=show_actors, back_populates='shows')
+        'Actor', secondary=shows_actors, back_populates='shows')
    
     def __repr__(self):
         return f'<Show {self.name} Network: {self.network}>'
@@ -60,7 +59,7 @@ class Actor(db.Model, SerializerMixin):
 
     # Relationship mapping the meeting to related employees
     shows = db.relationship(
-        'Show', secondary=show_actors, back_populates='actors')
+        'Show', secondary=shows_actors, back_populates='actors')
     
     show_id = db.Column(db.Integer, db.ForeignKey('shows.id'))
    
