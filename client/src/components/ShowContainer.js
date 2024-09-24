@@ -8,7 +8,8 @@ import AddActor from "./AddActor";
 function ShowContainer() {
   const [reviews, setReviews] = useState([]);
   const [shows, setShows] = useState([]);
-  
+  const [selectedShow, setSelectedShow] = useState(null); // Track selected show for update
+
   useEffect(() => {
     const fetchShowData = async () => {
       try {
@@ -23,7 +24,6 @@ function ShowContainer() {
     fetchShowData();
   }, []);
 
-
   useEffect(() => {
     const fetchReviewsData = async () => {
       try {
@@ -37,7 +37,6 @@ function ShowContainer() {
 
     fetchReviewsData();
   }, []);
-
 
   const handleAddShow = (newShow) => {
     console.log("New show added:", newShow);
@@ -59,16 +58,27 @@ function ShowContainer() {
       });
   };
 
+  const handleEditShow = (showId) => {
+    setSelectedShow(shows.find((show) => show.id === showId));
+ 
+  };
+
+  const handleUpdateShow = (updatedShow) => {
+    setShows((prevShows) =>
+      prevShows.map((show) => (show.id === updatedShow.id ? updatedShow : show))
+    );
+  };
+
   return (
     <div>
       <h2>This is the Show Card</h2>
       <h1>Add a new show</h1>
-      <AddShow onAddShow={handleAddShow} />
+      <AddShow onAddShow={handleAddShow} showToUpdate={selectedShow} onUpdateShow={handleUpdateShow} />
       <h2>List of TV Shows</h2>
       <ul>
         {shows.map((show) => (
           <li key={show.id}>
-            <ShowCard show={show} onDeleteShow={handleDeleteShow} />
+            <ShowCard show={show} onDeleteShow={handleDeleteShow} onEditShow={handleEditShow} />
             <ReviewCard review={reviews.find((review) => review.show_id === show.id)} showId = {show.id} onAddReview={handleAddReview} />
             <AddReview onAddReview={handleAddReview} showId = {show.id}/>
             <AddActor showId={show.id} />

@@ -17,21 +17,21 @@ function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
       e.preventDefault();
   
       if (showToUpdate) {
-        // Update existing show
+        setNewShow({ ...newShow, name: e.target.name.value });
         fetch(`http://127.0.0.1:5000/shows/${showToUpdate.id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newShow),
-        })
-          .then((r) => r.json())
-          .then((updatedShow) => {
-            onUpdateShow(updatedShow);
-            setNewShow({ id: null, name: "", network: "" });
-          });
+            method: "PUT", // Use PUT for updates
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name: newShow.name }), // Only send updated name
+          })
+            .then((r) => r.json())
+            .then((updatedShow) => {
+              onUpdateShow(updatedShow);
+              setNewShow({ id: null, name: "", network: "" });
+            });
       } else {
-        // Add new show (existing functionality)
+        
         fetch("http://127.0.0.1:5000/shows", {
           method: "POST",
           headers: {
@@ -47,7 +47,6 @@ function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
       }
     };
   
-    // Implement functionality to handle show deletion (explained later)
   
     return (
       <form className="new-show" onSubmit={handleSubmit}>
@@ -70,7 +69,6 @@ function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
         <button type="submit">
           {showToUpdate ? "Update" : "Send"}
         </button>
-        {/* Button for show deletion (explained later) */}
       </form>
     );
   }

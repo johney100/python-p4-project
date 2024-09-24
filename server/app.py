@@ -40,7 +40,7 @@ def shows():
         return  make_response(jsonify(new_show_dict), 201)
     
     
-@app.route('/shows/<int:id>', methods = ["GET", "PATCH", "DELETE"])
+@app.route('/shows/<int:id>', methods = ["GET", "PUT", "DELETE"])
 def shows_by_id(id):
     show = Show.query.filter_by(id=id).first()
 
@@ -48,23 +48,14 @@ def shows_by_id(id):
         show_by_id = show.to_dict()
         return make_response ( jsonify(show_by_id), 200  )
     
-    elif request.method == "PATCH":
+    elif request.method == 'PUT':
         data = request.get_json()
-        for attr in data:
-            setattr(show, attr, data[attr])
-
-        db.session.add(show)
-        db.session.commit()
-
-        show_dict = show.to_dict()
-
-        response = make_response(
-            show_dict,
-            200
-        )
-
-        return response
-    
+        if data.get('name'):
+            show.name = data.get('name')
+            db.session.commit()
+            show_dict = show.to_dict()
+            return make_response(jsonify(show_dict), 200)
+        
     elif request.method =="DELETE":
         db.session.delete(show)
         db.session.commit()
