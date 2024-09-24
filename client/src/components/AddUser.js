@@ -1,48 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
+import { Formik, Form, Field } from "formik";
 
 function AddUser({ onAddUser }) {
-  const [newUser, setNewUser] = useState({
+  const initialValues = {
     location: "",
     username: "",
-   
-  });
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    fetch("http://127.0.0.1:5000/users", {
+  const handleSubmit = async (values) => {
+    const response = await fetch("http://127.0.0.1:5000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newUser),
-    })
-      .then((r) => r.json())
-      .then((newUser) => {
-        onAddUser(newUser);
-        setNewUser({ location: "", username: "" });
-      });
+      body: JSON.stringify(values),
+    });
+
+    if (!response.ok) {
+      console.error("Error creating user:", response.statusText);
+      return;
+    }
+
+    const newUser = await response.json();
+    onAddUser(newUser);
   };
 
-
   return (
-    <form className="new-review" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="location"
-        autoComplete="off"
-        value={newUser.location}
-        onChange={(e) => setNewUser({ ...newUser, location: e.target.value })}
-      />
-      <input
-        type="text"
-        name="username"
-        autoComplete="off"
-        value={newUser.username}
-        onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
-      />
-      <button type="submit">Send</button>
-    </form>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      {({ values, handleChange }) => (
+        <Form className="new-review">
+          <Field
+            type="text"
+            name="location"
+            autoComplete="off"
+            placeholder="Enter Location"
+            value={values.location}
+            onChange={handleChange}
+          />
+          <Field
+            type="text"
+            name="username"
+            autoComplete="off"
+            placeholder="Enter Username"
+            value={values.username}
+            onChange={handleChange}
+          />
+          <button type="submit">Send</button>
+        </Form>
+      )}
+    </Formik>
   );
 }
 

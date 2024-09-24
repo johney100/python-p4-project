@@ -4,12 +4,11 @@ import AddUser from "./AddUser";
 
 function UserContainer({users}) {
   
-  
   return (
     <div>
       <h2>Active User List</h2>
       <h3>Add a new user</h3>
-      <AddUser />
+      <AddUser  />
       <ul>
         {users.map((user) => (
           <li key={user.id}>
