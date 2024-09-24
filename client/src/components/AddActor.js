@@ -1,38 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form, Field } from "formik";
 
 function AddActor({ onAddActor, showId }) {
-  const [newActor, setNewActor] = useState({
-    name: '',
-    age: '',
+  const initialValues = {
+    name: "",
+    age: "",
     show_id: showId,
-    role: '',
-  });
+    role: "",
+  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async (values) => {
     // Send a POST request to create a new actor
-    const actorResponse = await fetch('http://127.0.0.1:5000/actors', {
-      method: 'POST',
+    const actorResponse = await fetch("http://127.0.0.1:5000/actors", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(newActor),
+      body: JSON.stringify(values),
     });
 
     if (!actorResponse.ok) {
-      console.error('Error creating actor:', actorResponse.statusText);
+      console.error("Error creating actor:", actorResponse.statusText);
       return;
     }
 
     const newActorData = await actorResponse.json();
 
     // Send a POST request to create a new show-actor association
-    const associationResponse = await fetch('http://127.0.0.1:5000/shows_actors', {
-      method: 'POST',
+    const associationResponse = await fetch("http://127.0.0.1:5000/shows_actors", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         show_id: showId,
@@ -42,45 +40,49 @@ function AddActor({ onAddActor, showId }) {
     });
 
     if (!associationResponse.ok) {
-      console.error('Error creating show-actor association:', associationResponse.statusText);
+      console.error(
+        "Error creating show-actor association:",
+        associationResponse.statusText
+      );
       return;
     }
 
     onAddActor(newActorData);
-    setNewActor({ name: '', age: '', show_id: showId, role: '' });
   };
 
-
-  
   return (
-    <form className="new-review" onSubmit={handleSubmit}>
-      <h4>Add an actor to this show</h4>
-      <input
-        type="text"
-        name="name"
-        autoComplete="off"
-        placeholder="Enter Actor's Name"
-        value={newActor.name}
-        onChange={(e) => setNewActor({ ...newActor, name: e.target.value })}
-      />
-      <input
-        type="text"
-        name="age"
-        autoComplete="off"
-         placeholder="Enter Actor's Age"
-        value={newActor.age}
-        onChange={(e) => setNewActor({ ...newActor, age: e.target.value })}
-      />
-      <input
-        type="text"
-        name="role"
-        autoComplete="off"
-        placeholder="Enter Actor's Role"
-        value={newActor.role}
-        onChange={(e) => setNewActor({ ...newActor, role: e.target.value })}
-      />
-      <button type="submit">Send</button>
-    </form>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      {({ values, handleChange }) => ( // Destructure props from Formik
+        <Form className="new-review">
+          <h4>Add an actor to this show</h4>
+          <Field
+            type="text"
+            name="name"
+            autoComplete="off"
+            placeholder="Enter Actor's Name"
+            value={values.name} // Access value from Formik state
+            onChange={handleChange} // Use Formik's handleChange
+          />
+          <Field
+            type="text"
+            name="age"
+            autoComplete="off"
+            placeholder="Enter Actor's Age"
+            value={values.age}
+            onChange={handleChange}
+          />
+          <Field
+            type="text"
+            name="role"
+            autoComplete="off"
+            placeholder="Enter Actor's Role"
+            value={values.role}
+            onChange={handleChange}
+          />
+          <button type="submit">Send</button>
+        </Form>
+      )}
+    </Formik>
   );
 }
 
