@@ -39,7 +39,7 @@ function AddReview({ onAddReview, showId }) {
         type="int"
         name="score"
         autoComplete="off"
-         placeholder="Add a score out of 4"
+         placeholder="Add a score out of "
         value={newReview.score}
         onChange={(e) => setNewReview({ ...newReview, score: e.target.value })}
       />

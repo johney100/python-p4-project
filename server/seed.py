@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, Show, Actor, User, Review, show_actors
+from models import db, Show, Actor, User, Review, shows_actors
 
 fake = Faker()
 
@@ -84,7 +84,7 @@ def make_shows():
 
 def actor_to_show():
     
-    db.session.query(show_actors).delete()
+    db.session.query(shows_actors).delete()
 
     shows = Show.query.all()  # Get all existing shows
 
