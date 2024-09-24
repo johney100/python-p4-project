@@ -67,7 +67,7 @@ function App() {
     <BrowserRouter>
       <NavBar />  {/* Pass search function to NavBar */}
       <Routes>
-        <Route path="/" element={<ShowContainer shows={shows} actors={actors} />} />
+        <Route path="/" element={<ShowContainer />} />
         <Route path="/actors" element={<ActorContainer actors={actors}  />} />
         <Route path="/users" element={<UserContainer users={users} />} />
         {/* Add more routes here */}

@@ -5,9 +5,24 @@ import AddShow from "./AddShow";
 import AddReview from "./AddReview";
 import AddActor from "./AddActor";
 
-function ShowContainer({ shows }) {
+function ShowContainer() {
   const [reviews, setReviews] = useState([]);
+  const [shows, setShows] = useState([]);
   
+  useEffect(() => {
+    const fetchShowData = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/shows');
+        const data = await response.json();
+        setShows(data);
+      } catch (error) {
+        console.error('Error fetching shows:', error);
+      }
+    };
+
+    fetchShowData();
+  }, []);
+
 
   useEffect(() => {
     const fetchReviewsData = async () => {
@@ -25,16 +40,24 @@ function ShowContainer({ shows }) {
 
 
   const handleAddShow = (newShow) => {
-    // Handle newly created show (e.g., update shows state)
     console.log("New show added:", newShow);
   };
 
   const handleAddReview = (showId, newReview) => {
-    // Handle newly created review (e.g., update reviews state)
     console.log("New review added for show", showId, newReview);
   };
 
-
+  const handleDeleteShow = (showId) => {
+    fetch(`http://127.0.0.1:5000/shows/${showId}`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        setShows(shows.filter((show) => show.id !== showId));
+      })
+      .catch((error) => {
+        console.error("Error deleting show:", error);
+      });
+  };
 
   return (
     <div>
@@ -45,10 +68,10 @@ function ShowContainer({ shows }) {
       <ul>
         {shows.map((show) => (
           <li key={show.id}>
-            <ShowCard show={show} />
+            <ShowCard show={show} onDeleteShow={handleDeleteShow} />
             <ReviewCard review={reviews.find((review) => review.show_id === show.id)} showId = {show.id} onAddReview={handleAddReview} />
             <AddReview onAddReview={handleAddReview} showId = {show.id}/>
-            <AddActor showId = {show.id} />
+            <AddActor showId={show.id} />
           </li>
         ))}
       </ul>

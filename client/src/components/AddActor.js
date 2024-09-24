@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Formik, Form, Field } from "formik";
 
 function AddActor({ onAddActor, showId }) {
   const [newActor, setNewActor] = useState({
@@ -49,6 +50,8 @@ function AddActor({ onAddActor, showId }) {
     setNewActor({ name: '', age: '', show_id: showId, role: '' });
   };
 
+
+  
   return (
     <form className="new-review" onSubmit={handleSubmit}>
       <h4>Add an actor to this show</h4>
