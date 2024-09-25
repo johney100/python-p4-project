@@ -52,12 +52,12 @@ function App() {
     <div className="App"> 
     <h1>TV Show App</h1>
     <BrowserRouter>
-      <NavBar />  {/* Pass search function to NavBar */}
+      <NavBar /> 
       <Routes>
         <Route path="/" element={<ShowContainer />} />
         <Route path="/actors" element={<ActorContainer actors={actors}  />} />
         <Route path="/users" element={<UserContainer users={users} />} />
-        {/* Add more routes here */}
+ 
       </Routes>
     </BrowserRouter>
     </div>
@@ -65,8 +65,3 @@ function App() {
 }
 
 export default App;
-
-// <Route path="/addshow" element={<Form addShows={addShows} />}/>
-// <Route path="/" element={<Home />}/>
-//<Route path="/shows" element={<ShowContainer showData={showData} />} />
-// <NavBar onChangePage={setPage}/>

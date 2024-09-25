@@ -1,3 +1,4 @@
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy_serializer import SerializerMixin
@@ -17,7 +18,6 @@ shows_actors = db.Table(
     db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'), primary_key=True),
     db.Column('role', db.String, unique=False)  # Add a new column for the role attribute
 )
-
 
 
 class Show(db.Model, SerializerMixin):
@@ -106,3 +106,5 @@ class User(db.Model, SerializerMixin):
 
     #reviews = db.relationship('Review', backref='user')
     #review = db.relationship('Reciew', back_populates="users")
+
+

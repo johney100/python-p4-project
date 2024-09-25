@@ -5,7 +5,7 @@ import React, { useState } from "react";
 function ReviewCard({ review }) {
   return (
     <div className="review-card">
-      {review ? (  // Check if review exists before accessing properties
+      {review ? (  
         <>
           <h4>Review: "{review.comment}"</h4>
           <p>Score: {review.score}/4</p>

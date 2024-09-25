@@ -12,7 +12,7 @@ function UserContainer({users}) {
       <ul>
         {users.map((user) => (
           <li key={user.id}>
-            <UserCard user={user} /> {/* Pass data to ActorCard */}
+            <UserCard user={user} />
            
           </li>
         ))}

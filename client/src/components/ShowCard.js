@@ -7,7 +7,7 @@ function ShowCard({ show, onDeleteShow, onEditShow }) {
       <p>Network: {show.network}</p>
       <button onClick={() => onDeleteShow(show.id)}>Delete</button>
       {onEditShow && <button onClick={() => onEditShow(show.id)}>Edit</button>}
-      {/* Add other show details as needed */}
+
     </div>
   );
 }
