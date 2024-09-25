@@ -1,10 +1,21 @@
 import React from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 function AddUser({ onAddUser }) {
   const initialValues = {
     location: "",
     username: "",
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    if (!values.location) {
+      errors.location = "Location is required";
+    }
+    if (!values.username) {
+      errors.username = "Username is required";
+    }
+    return errors;
   };
 
   const handleSubmit = async (values) => {
@@ -26,8 +37,8 @@ function AddUser({ onAddUser }) {
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-      {({ values, handleChange }) => (
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
+      {({ values, handleChange, touched, errors }) => (
         <Form className="new-review">
           <Field
             type="text"
@@ -37,6 +48,8 @@ function AddUser({ onAddUser }) {
             value={values.location}
             onChange={handleChange}
           />
+          <ErrorMessage name="location" component="div" className="error" />
+
           <Field
             type="text"
             name="username"
@@ -45,7 +58,9 @@ function AddUser({ onAddUser }) {
             value={values.username}
             onChange={handleChange}
           />
-          <button type="submit">Send</button>
+          <ErrorMessage name="username" component="div" className="error" />
+
+          <button type="submit" disabled={!!errors.length}>Send</button>
         </Form>
       )}
     </Formik>

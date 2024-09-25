@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 function AddActor({ onAddActor, showId }) {
   const initialValues = {
@@ -7,6 +7,20 @@ function AddActor({ onAddActor, showId }) {
     age: "",
     show_id: showId,
     role: "",
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    if (!values.name) {
+      errors.name = "Name is required";
+    }
+    if (!values.age || isNaN(values.age)) {
+      errors.age = "Age must be a number";
+    }
+    if (!values.role) {
+      errors.role = "Role is required";
+    }
+    return errors;
   };
 
   const handleSubmit = async (values) => {
@@ -51,8 +65,8 @@ function AddActor({ onAddActor, showId }) {
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-      {({ values, handleChange }) => ( // Destructure props from Formik
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
+      {({ values, handleChange, touched, errors }) => ( // Destructure props from Formik
         <Form className="new-review">
           <h4>Add an actor to this show</h4>
           <Field
@@ -60,9 +74,11 @@ function AddActor({ onAddActor, showId }) {
             name="name"
             autoComplete="off"
             placeholder="Enter Actor's Name"
-            value={values.name} // Access value from Formik state
-            onChange={handleChange} // Use Formik's handleChange
+            value={values.name}
+            onChange={handleChange}
           />
+          <ErrorMessage name="name" component="div" className="error" /> {/* Display name error */}
+
           <Field
             type="text"
             name="age"
@@ -71,6 +87,8 @@ function AddActor({ onAddActor, showId }) {
             value={values.age}
             onChange={handleChange}
           />
+          <ErrorMessage name="age" component="div" className="error" /> {/* Display age error */}
+
           <Field
             type="text"
             name="role"
@@ -79,7 +97,11 @@ function AddActor({ onAddActor, showId }) {
             value={values.role}
             onChange={handleChange}
           />
-          <button type="submit">Send</button>
+          <ErrorMessage name="role" component="div" className="error" /> {/* Display role error */}
+
+          <button type="submit" disabled={!!errors.length}>
+            Send
+          </button>
         </Form>
       )}
     </Formik>

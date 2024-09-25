@@ -1,50 +1,76 @@
-import React, { useState } from "react";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 function AddReview({ onAddReview, showId }) {
-  const [newReview, setNewReview] = useState({
+  const initialValues = {
     comment: "",
     score: "",
     show_id: showId,
-  });
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const validate = (values) => {
+    const errors = {};
+    if (!values.comment) {
+      errors.comment = "Comment is required";
+    }
+    if (!values.score || isNaN(values.score)) {
+      errors.score = "Score must be a number";
+    } else if (values.score < 0 || values.score > 10) {
+      errors.score = "Score must be between 0 and 10";
+    }
+    return errors;
+  };
 
-    fetch("http://127.0.0.1:5000/reviews", {
+  const handleSubmit = async (values) => {
+    // Send a POST request to create a new review
+    const reviewResponse = await fetch("http://127.0.0.1:5000/reviews", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newReview),
-    })
-      .then((r) => r.json())
-      .then((newReview) => {
-        onAddReview(newReview);
-        setNewReview({ comment: "", score: "" });
-      });
+      body: JSON.stringify(values),
+    });
+
+    if (!reviewResponse.ok) {
+      console.error("Error creating review:", reviewResponse.statusText);
+      return;
+    }
+
+    const newReviewData = await reviewResponse.json();
+    onAddReview(newReviewData);
   };
 
   return (
-    <form className="new-review" onSubmit={handleSubmit}>
-      <h3>Leave a review</h3>
-      <input
-        type="text"
-        name="comment"
-        autoComplete="off"
-        placeholder="Add your review"
-        value={newReview.comment}
-        onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
-      />
-      <input
-        type="int"
-        name="score"
-        autoComplete="off"
-         placeholder="Add a score out of "
-        value={newReview.score}
-        onChange={(e) => setNewReview({ ...newReview, score: e.target.value })}
-      />
-      <button type="submit">Send</button>
-    </form>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
+      {({ values, handleChange, touched, errors }) => (
+        <Form className="new-review">
+          <h3>Leave a review</h3>
+          <Field
+            type="text"
+            name="comment"
+            autoComplete="off"
+            placeholder="Add your review"
+            value={values.comment}
+            onChange={handleChange}
+          />
+          <ErrorMessage name="comment" component="div" className="error" />
+
+          <Field
+            type="number" // Change input type to number for score
+            name="score"
+            autoComplete="off"
+            placeholder="Add a score out of 10"
+            value={values.score}
+            onChange={handleChange}
+          />
+          <ErrorMessage name="score" component="div" className="error" />
+
+          <button type="submit" disabled={!!errors.length}>
+            Send
+          </button>
+        </Form>
+      )}
+    </Formik>
   );
 }
 
