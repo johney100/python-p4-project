@@ -66,7 +66,7 @@ function AddActor({ onAddActor, showId }) {
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
-      {({ values, handleChange, touched, errors }) => ( // Destructure props from Formik
+      {({ values, handleChange, touched, errors }) => ( 
         <Form className="new-review">
           <h4>Add an actor to this show</h4>
           <Field

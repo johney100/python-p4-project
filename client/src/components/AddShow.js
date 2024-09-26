@@ -1,76 +1,74 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
-    const [newShow, setNewShow] = useState({
-      id: null,
-      name: "",
-      network: "",
-    });
-  
-    useEffect(() => {
-      if (showToUpdate) {
-        setNewShow(showToUpdate);
+  const initialValues = {
+    id: showToUpdate?.id || null,
+    name: showToUpdate?.name || "",
+    network: showToUpdate?.network || "",
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    if (!values.name) {
+      errors.name = "Name is required";
+    }
+    return errors;
+  };
+
+  const handleSubmit = async (values) => {
+    const url = showToUpdate ? `http://127.0.0.1:5000/shows/${values.id}` : "http://127.0.0.1:5000/shows";
+    const method = showToUpdate ? "PUT" : "POST";
+    const body = JSON.stringify(values);
+
+    try {
+      const response = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body });
+      if (!response.ok) {
+        throw new Error(`Error ${method === "PUT" ? "updating" : "creating"} show: ${response.statusText}`);
       }
-    }, [showToUpdate]);
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-  
+      const newShowData = await response.json();
       if (showToUpdate) {
-        setNewShow({ ...newShow, name: e.target.name.value });
-        fetch(`http://127.0.0.1:5000/shows/${showToUpdate.id}`, {
-            method: "PUT", // Use PUT for updates
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ name: newShow.name }), // Only send updated name
-          })
-            .then((r) => r.json())
-            .then((updatedShow) => {
-              onUpdateShow(updatedShow);
-              setNewShow({ id: null, name: "", network: "" });
-            });
+        onUpdateShow(newShowData);
       } else {
-        
-        fetch("http://127.0.0.1:5000/shows", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newShow),
-        })
-          .then((r) => r.json())
-          .then((newShow) => {
-            onAddShow(newShow);
-            setNewShow({ id: null, name: "", network: "" });
-          });
+        onAddShow(newShowData);
       }
-    };
-  
-  
-    return (
-      <form className="new-show" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          autoComplete="off"
-          placeholder="Enter name of new show"
-          value={newShow.name}
-          onChange={(e) => setNewShow({ ...newShow, name: e.target.value })}
-        />
-        <input
-          type="text"
-          name="network"
-          autoComplete="off"
-          placeholder="Enter network for new show"
-          value={newShow.network}
-          onChange={(e) => setNewShow({ ...newShow, network: e.target.value })}
-        />
-        <button type="submit">
-          {showToUpdate ? "Update" : "Send"}
-        </button>
-      </form>
-    );
-  }
-  
-  export default AddShow;
+      // Reset form after successful submit
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  return (
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
+      {({ values, handleChange, touched, errors }) => (
+        <Form className="new-show">
+          <Field
+            type="text"
+            name="name"
+            autoComplete="off"
+            placeholder="Enter show name"
+            value={values.name}
+            onChange={handleChange}
+          />
+          <ErrorMessage name="name" component="div" className="error" />
+
+          {showToUpdate && ( 
+            <Field
+              type="text"
+              name="network"
+              autoComplete="off"
+              placeholder="Enter network"
+              value={values.network}
+              onChange={handleChange}
+            />
+          )}
+          <ErrorMessage name="network" component="div" className="error" />
+
+          <button type="submit">{showToUpdate ? "Update" : "Send"}</button>
+        </Form>
+      )}
+    </Formik>
+  );
+}
+
+export default AddShow;

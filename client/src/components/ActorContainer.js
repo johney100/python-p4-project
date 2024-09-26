@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from "react";
-import ActorCard from "./ActorCard"; // Import ActorCard component for individual Actor rendering
+import ActorCard from "./ActorCard"; 
 
 function ActorContainer({actors}) {
   return (
@@ -9,7 +9,7 @@ function ActorContainer({actors}) {
       <ul>
         {actors.map((actor) => (
           <li key={actor.id}>
-            <ActorCard actor={actor} /> {/* Pass data to ActorCard */}
+            <ActorCard actor={actor} /> 
           </li>
         ))}
       </ul>
