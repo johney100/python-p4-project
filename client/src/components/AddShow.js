@@ -52,16 +52,15 @@ function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
           />
           <ErrorMessage name="name" component="div" className="error" />
 
-          {showToUpdate && ( 
-            <Field
-              type="text"
-              name="network"
-              autoComplete="off"
-              placeholder="Enter network"
-              value={values.network}
-              onChange={handleChange}
-            />
-          )}
+          {/* Network field is always displayed now */}
+          <Field
+            type="text"
+            name="network"
+            autoComplete="off"
+            placeholder="Enter network"
+            value={values.network}
+            onChange={handleChange}
+          />
           <ErrorMessage name="network" component="div" className="error" />
 
           <button type="submit">{showToUpdate ? "Update" : "Send"}</button>

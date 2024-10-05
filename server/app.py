@@ -204,7 +204,7 @@ class ShowList(Resource):
 
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('name', required=True)
+        parser.add_argument('name')
         parser.add_argument('network')
         data = parser.parse_args()
 

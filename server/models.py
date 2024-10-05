@@ -37,7 +37,7 @@ class Show(db.Model, SerializerMixin):
         'Review', back_populates="show", cascade='all, delete-orphan')
 
 
-    # Relationship mapping the employee to related meetings
+    # Relationship mapping the show to related actors
     actors = db.relationship(
         'Actor', secondary=shows_actors, back_populates='shows')
    
@@ -108,3 +108,7 @@ class User(db.Model, SerializerMixin):
     #review = db.relationship('Reciew', back_populates="users")
 
 
+### USE breakpoint - similar to ipdb - external lib
+## print method + repr
+## add styling - tailwind is popular
+## review association 
