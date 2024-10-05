@@ -22,7 +22,7 @@ function ActorCard({ actor }) {
       <div className="actor-card">
         <h3>{actor.name}</h3>
         <p>Age: {actor.age}</p>
-        {show && <p>Shows: {show.name}</p>}
+        {show && <p>Recent shows: {show.name}</p>}
         {/* Add other show details as needed */}
       </div>
     );

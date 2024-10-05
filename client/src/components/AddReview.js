@@ -21,7 +21,7 @@ function AddReview({ onAddReview, showId }) {
     return errors;
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { resetForm }) => {
     // Send a POST request to create a new review
     const reviewResponse = await fetch("http://127.0.0.1:5000/reviews", {
       method: "POST",
@@ -35,6 +35,7 @@ function AddReview({ onAddReview, showId }) {
       console.error("Error creating review:", reviewResponse.statusText);
       return;
     }
+    resetForm();
 
     const newReviewData = await reviewResponse.json();
     onAddReview(newReviewData);

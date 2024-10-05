@@ -16,7 +16,7 @@ function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
     return errors;
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { resetForm }) => {
     const url = showToUpdate ? `http://127.0.0.1:5000/shows/${values.id}` : "http://127.0.0.1:5000/shows";
     const method = showToUpdate ? "PUT" : "POST";
     const body = JSON.stringify(values);
@@ -36,7 +36,9 @@ function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
     } catch (error) {
       console.error(error.message);
     }
+    resetForm();
   };
+
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
@@ -52,7 +54,7 @@ function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
           />
           <ErrorMessage name="name" component="div" className="error" />
 
-          {/* Network field is always displayed now */}
+          
           <Field
             type="text"
             name="network"

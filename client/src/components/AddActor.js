@@ -23,7 +23,7 @@ function AddActor({ onAddActor, showId }) {
     return errors;
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { resetForm }) => {
     // Send a POST request to create a new actor
     const actorResponse = await fetch("http://127.0.0.1:5000/actors", {
       method: "POST",
@@ -37,6 +37,7 @@ function AddActor({ onAddActor, showId }) {
       console.error("Error creating actor:", actorResponse.statusText);
       return;
     }
+    resetForm();
 
     const newActorData = await actorResponse.json();
 

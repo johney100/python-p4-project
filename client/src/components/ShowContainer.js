@@ -40,6 +40,7 @@ function ShowContainer() {
 
   const handleAddShow = (newShow) => {
     console.log("New show added:", newShow);
+    
   };
 
   const handleAddReview = (showId, newReview) => {

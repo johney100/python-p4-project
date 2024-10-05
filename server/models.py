@@ -50,8 +50,8 @@ class Actor(db.Model, SerializerMixin):
 
     serialize_rules = ('-shows',)
 
-    name = db.Column(db.String, unique=False)
-    age = db.Column(db.Integer, unique=False)
+    name = db.Column(db.String)
+    age = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
@@ -105,7 +105,7 @@ class User(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     #reviews = db.relationship('Review', backref='user')
-    #review = db.relationship('Reciew', back_populates="users")
+    #review = db.relationship('Review', back_populates="users")
 
 
 ### USE breakpoint - similar to ipdb - external lib
