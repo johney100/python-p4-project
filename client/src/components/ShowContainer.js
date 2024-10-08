@@ -9,7 +9,7 @@ function ShowContainer() {
   const [reviews, setReviews] = useState([]);
   const [shows, setShows] = useState([]);
   const [selectedShow, setSelectedShow] = useState(null); // Track selected show for update
-
+  console.log(selectedShow)
   useEffect(() => {
     const fetchShowData = async () => {
       try {
@@ -60,6 +60,7 @@ function ShowContainer() {
   };
 
   const handleEditShow = (showId) => {
+    console.log(showId)
     setSelectedShow(shows.find((show) => show.id === showId));
  
   };
@@ -71,7 +72,7 @@ function ShowContainer() {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>This is the Show Card</h2>
       <h1>Add a new show</h1>
       <AddShow onAddShow={handleAddShow} showToUpdate={selectedShow} onUpdateShow={handleUpdateShow} />

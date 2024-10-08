@@ -8,7 +8,7 @@ function NavBar(){
     
     return(
         <div>
-            <nav>
+            <nav className="navbar">
             <Link to="/">Shows</Link> 
             <Link to="/users">Users</Link>
             <Link to="/actors">Actors</Link>
